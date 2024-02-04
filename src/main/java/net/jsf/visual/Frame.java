@@ -78,8 +78,7 @@ class RoundedTextField extends JTextField {
 public class Frame extends JFrame {
     private final Dimension windowSize = new Dimension(500, 350);
     private final Image windowIcon = new ImageIcon("Payroll System.png").getImage();
-    private Dimension verificationTextFieldSize = new Dimension(200, 20);
-    // private Dimension verificationPanelSize = new Dimension(350, (int) windowSize.getHeight());
+    private Dimension verificationTextFieldSize = new Dimension(230, 20);
     private Dimension verificationPanelSize = new Dimension((int) windowSize.getWidth() - 100, (int) windowSize.getHeight() - 20);
 
     private Color backgroundGreenColor = new Color(0, 173, 91);
@@ -375,7 +374,46 @@ public class Frame extends JFrame {
 
             try {
                 days = Integer.parseInt(verificationDaysWorkedTextField.getText());
+            }
+            catch (NumberFormatException e) {
+                new Thread(() -> {
+                    verificationDaysWorkedTextField.setText("Invalid number of days");
+                    verificationDaysWorkedTextField.setFont(textFieldFont.deriveFont(16f));
 
+                    try {
+                        Thread.sleep(2000);
+                    }
+                    catch (InterruptedException err) {
+                        Thread.currentThread().interrupt();
+                    }
+
+                    verificationDaysWorkedTextField.setText("");
+                    verificationDaysWorkedTextField.setFont(textFieldFont);
+                }).start();
+
+                return;
+            }
+
+            if (days > 365) {
+                new Thread(() -> {
+                    verificationDaysWorkedTextField.setText("Enter between 1 to 365 days");
+                    verificationDaysWorkedTextField.setFont(textFieldFont.deriveFont(16f));
+
+                    try {
+                        Thread.sleep(2000);
+                    }
+                    catch (InterruptedException err) {
+                        Thread.currentThread().interrupt();
+                    }
+                    verificationDaysWorkedTextField.setText("");
+                    verificationDaysWorkedTextField.setFont(textFieldFont);
+
+                }).start();
+
+                return;
+            }
+
+            try {
                 payrollSystem = new PayrollSystem();
                 payrollSystem.setDaysWorked(days);
                 payrollSystem.calculate();
@@ -389,11 +427,11 @@ public class Frame extends JFrame {
                 employeeIDLabel = new JLabel("Employee " + PayrollSystem.formatEmployeeID(payrollSystem.getEmployeeID()));
                 employeeIDLabel.setFont(new Font(verificationDaysWorkedTextFieldLabel.getFont().getName(), 1, 32));
                 employeeIDLabel.setForeground(backgroundGrayColor);
-    
+        
                 employeeDaysWorkedLabel = new JLabel("Worked a total of " + payrollSystem.getemployeeDaysWorked() + " day(s)");
                 employeeDaysWorkedLabel.setFont(new Font(verificationDaysWorkedTextFieldLabel.getFont().getName(), 1, 16));
                 employeeDaysWorkedLabel.setForeground(backgroundGrayColor);
-                
+                    
                 employeeDailyRateLabel = new JLabel("Daily Wage: $ " + String.format("%,.2f", payrollSystem.getEmployeeDailyRate()));
                 employeeDailyRateLabel.setFont(new Font(textFieldFont.getFontName(), 0, 22));
                 employeeDailyRateLabel.setForeground(backgroundGrayColor);
@@ -401,11 +439,11 @@ public class Frame extends JFrame {
                 employeeGrossPayLabel = new JLabel("Gross Pay: $ " + String.format("%,.2f", payrollSystem.getEmployeeGrossSalary()));
                 employeeGrossPayLabel.setFont(new Font(textFieldFont.getFontName(), 0, 22));
                 employeeGrossPayLabel.setForeground(backgroundGrayColor);
-    
+        
                 employeeTaxLabel = new JLabel("Income Tax: $ " + String.format("%,.2f", payrollSystem.getEmployeeTax()));
                 employeeTaxLabel.setFont(new Font(textFieldFont.getFontName(), 0, 22));
                 employeeTaxLabel.setForeground(backgroundGrayColor);
-    
+        
                 employeeNetPayLabel = new JLabel("Net Pay: $ " + String.format("%,.2f", payrollSystem.getEmployeeNetPay()));
                 employeeNetPayLabel.setFont(new Font(textFieldFont.getFontName(), 0, 22));
                 employeeNetPayLabel.setForeground(backgroundGrayColor);
