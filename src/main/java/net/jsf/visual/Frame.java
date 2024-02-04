@@ -9,7 +9,6 @@ import net.jsf.payroll.EmployeeNotFound;
 import net.jsf.payroll.PayrollSystem;
 import net.miginfocom.swing.MigLayout;
 
-
 class RoundedPanel extends JPanel {
     private int radius = 10;
     private Color backgroundColor = null;
@@ -80,8 +79,8 @@ public class Frame extends JFrame {
     private final Dimension windowSize = new Dimension(500, 350);
     private final Image windowIcon = new ImageIcon("Payroll System.png").getImage();
     private Dimension verificationTextFieldSize = new Dimension(200, 20);
-    private Dimension verificationContainerSize = new Dimension(350, (int) windowSize.getHeight());
-    private Dimension verificationPanelSize = new Dimension((int) windowSize.getWidth() - 170, (int) windowSize.getHeight() - 20);
+    // private Dimension verificationPanelSize = new Dimension(350, (int) windowSize.getHeight());
+    private Dimension verificationPanelSize = new Dimension((int) windowSize.getWidth() - 100, (int) windowSize.getHeight() - 20);
 
     private Color backgroundGreenColor = new Color(0, 173, 91);
     private Color backgroundGrayColor = new Color(18, 18, 18);
@@ -95,7 +94,7 @@ public class Frame extends JFrame {
     private BorderLayout windowLayout = new BorderLayout();
     private MigLayout verificationLayout = new MigLayout("wrap, align 50% 50%", "[]", "[]20[]5[]");
 
-    private RoundedPanel verificationPanel;
+    private JPanel verificationPanel;
     private RoundedPanel verificationAuthButton;
     private RoundedPanel verificationEnterButton;
     private RoundedPanel employeeDetailPanel;
@@ -134,7 +133,7 @@ public class Frame extends JFrame {
 
     private void initVerificationContainer() {
         verificationContainerPanel = new JPanel(new MigLayout());
-        verificationContainerPanel.setPreferredSize(verificationContainerSize);
+        verificationContainerPanel.setPreferredSize(verificationPanelSize);
         verificationContainerPanel.setBackground(backgroundBlackColor);
 
         initVerificationPanel();
@@ -146,7 +145,8 @@ public class Frame extends JFrame {
     }
 
     private void initVerificationPanel() {
-        verificationPanel = new RoundedPanel(verificationLayout, backgroundBlackColor);
+        verificationPanel = new JPanel(verificationLayout);
+        verificationPanel.setBackground(backgroundBlackColor);
         verificationPanel.setLayout(verificationLayout);
         verificationPanel.setPreferredSize(verificationPanelSize);
 
@@ -154,7 +154,7 @@ public class Frame extends JFrame {
         initVerificationField(verificationPanel);
     }
 
-    private void initVerificationField(RoundedPanel panel) {
+    private void initVerificationField(JPanel panel) {
         invisibleFieldContainer = new JPanel(new MigLayout("wrap", "[]10[]"));
         invisibleFieldContainer.setBackground(backgroundBlackColor);
 
@@ -198,7 +198,7 @@ public class Frame extends JFrame {
         panel.add(verificationAuthButton, "align center");
     }
 
-    private void initVerificationLabel(RoundedPanel panel) {
+    private void initVerificationLabel(JPanel panel) {
         verificationLabel = new JLabel("Employee Verification");
         verificationLabel.setFont(employeeIDLabelFont);
         verificationLabel.setForeground(textWhiteForeground);
